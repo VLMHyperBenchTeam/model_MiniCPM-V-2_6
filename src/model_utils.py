@@ -2,13 +2,14 @@ import torch
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM, AutoProcessor
 
 class MiniCPM_model:
-    def __init__(self, cache_directory, model_name="openbmb/MiniCPM-V-2_6"):
+    def __init__(self, cache_directory, model_name="openbmb/MiniCPM-V-2_6", api_key=None):
         self.model = AutoModel.from_pretrained(
             model_name,
             trust_remote_code=True,
             cache_dir=cache_directory,
             attn_implementation="sdpa",
             torch_dtype=torch.bfloat16,
+            use_auth_token=api_key
         )
 
         self.model = self.model.eval()
@@ -24,7 +25,7 @@ class MiniCPM_model:
             model_name,
             trust_remote_code=True,
             cache_dir=cache_directory,
-            fast_image_processor_class=True
+            #fast_image_processor_class=True
         )
 
     def chat(self, image, msgs):
